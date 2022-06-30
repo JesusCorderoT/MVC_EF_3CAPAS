@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="InstitutoTichModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ALUMNOS">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="60" Nullable="false" />
+    <Property Name="primerApellido" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="segundoApellido" Type="varchar" MaxLength="50" />
+    <Property Name="correo" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="telefono" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="fechaNacimiento" Type="date" Nullable="false" />
+    <Property Name="curp" Type="char" MaxLength="18" Nullable="false" />
+    <Property Name="sueldo" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="idestadoorigen" Type="smallint" Nullable="false" />
+    <Property Name="idEstatus" Type="smallint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Estados">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="EstatusAlumno">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="clave" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__ALUMNOS__idestad__46E78A0C">
+    <End Role="Estados" Type="Self.Estados" Multiplicity="1" />
+    <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Estados">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="ALUMNOS">
+        <PropertyRef Name="idestadoorigen" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ALUMNOS__idEstat__47DBAE45">
+    <End Role="EstatusAlumno" Type="Self.EstatusAlumno" Multiplicity="1" />
+    <End Role="ALUMNOS" Type="Self.ALUMNOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EstatusAlumno">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="ALUMNOS">
+        <PropertyRef Name="idEstatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="InstitutoTichModelStoreContainer">
+    <EntitySet Name="ALUMNOS" EntityType="Self.ALUMNOS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Estados" EntityType="Self.Estados" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EstatusAlumno" EntityType="Self.EstatusAlumno" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__ALUMNOS__idestad__46E78A0C" Association="Self.FK__ALUMNOS__idestad__46E78A0C">
+      <End Role="Estados" EntitySet="Estados" />
+      <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ALUMNOS__idEstat__47DBAE45" Association="Self.FK__ALUMNOS__idEstat__47DBAE45">
+      <End Role="EstatusAlumno" EntitySet="EstatusAlumno" />
+      <End Role="ALUMNOS" EntitySet="ALUMNOS" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

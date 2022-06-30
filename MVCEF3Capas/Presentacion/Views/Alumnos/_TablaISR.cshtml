@@ -1,0 +1,60 @@
+﻿@model Negocio.WCFReferencia.ItemTablaISR
+
+    <div>
+        <h4>ItemTablaISR</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.CuotaFija)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CuotaFija)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Excedente)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Excedente)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LimiteInferior)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LimiteInferior)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LimiteSuperior)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LimiteSuperior)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.impuesto)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.impuesto)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.subsidio)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.subsidio)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>

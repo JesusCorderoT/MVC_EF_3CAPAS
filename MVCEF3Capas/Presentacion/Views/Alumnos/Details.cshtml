@@ -1,0 +1,329 @@
+﻿@model Entidades.ALUMNOS
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ALUMNOS</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.id)
+        </dt>
+ 
+        <dd>
+      <span id="aluId"> @Html.DisplayFor(model => model.id) </span>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.primerApellido)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.primerApellido)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.segundoApellido)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.segundoApellido)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.correo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.correo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.telefono)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.telefono)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fechaNacimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fechaNacimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.curp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.curp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sueldo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sueldo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.idestadoorigen)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estados.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.idEstatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EstatusAlumno.nombre)
+        </dd>
+
+    </dl>
+</div>
+
+
+
+
+
+
+
+
+      @*<%--Ventana Modal IMSS - Cliente--%>*@
+<div class="modal" id="venModalclienteIMSS">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cálculo del IMSS</h4>
+                <asp:Button ID="btnX" runat="server" Text="&times;" class="close" OnClick="btnCancelar_Click()" />
+            </div>
+            <div class="modal-body" id="idIMSS">
+
+
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" OnClick="btnCancelar_Click()" >Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        @*<%--Ventana Modal ISR - Servidor--%>*@
+<div class="modal" id="venModalSrvISR">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cálculo del ISR</h4>
+                <asp:Button ID="btnXISR" runat="server" Text="&times;" class="close" OnClick="btnCancelar_Click()" />
+            </div>
+            <div class="modal-body" id="idISR">
+          
+
+            </div>
+             Modal footer 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" OnClick="btnCancelar_Click()">Cerrar</button>
+                @*<asp:Button ID="btnCerrarISR" runat="server" Text="Cerrar" CssClass="btn btn-danger" OnClick="btnCancelar_Click()" />*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<dl class="dl-horizontal">
+    <dt>
+        <input type="submit" value="Calcular IMSS" onclick="CalcularIMSS()" class="btn btn-primary" />
+    </dt>
+    <dd>
+        <input type="submit" value="Calcular ISR" onclick="CalcularISR()" class="btn btn-primary" />
+    </dd>
+</dl>
+
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+<script type="text/javascript">
+
+
+    function btnCancelar_Click() {
+        $("#venModalSrvISR").hide();
+        $("#venModalclienteIMSS").hide();
+    }
+
+
+        function CalcularIMSS() {
+            var id = $("#aluId").text();
+        var urlws = "@Url.Action("_AportacionesIMSS","Alumnos")" + "/" + id;
+        var alumno = { id: id };
+        LLamaAJAXPost(urlws, MuestraAportacionesIMSS);
+    }
+
+        function CalcularISR() {
+        var id = $("#aluId").text();
+        var urlws = "@Url.Action("_TablaISR", "Alumnos")" + "/" + id;
+        var alumno = { id: id };
+        LLamaAJAXPost(urlws, MuestraAportacionesISR);
+    }
+
+
+
+
+
+
+
+    function LLamaAJAXPost(url, funcionExito) {
+        $.ajax(
+            {
+
+                type: 'GET',
+                url: url,
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: funcionExito,
+                error: errorGenerico
+            }
+        );
+
+    }
+
+
+    function MuestraAportacionesISR(data) {
+        try {
+            $("#idISR").html(data);
+            $("#venModalSrvISR").modal();
+        }
+        catch (ex) {
+            alumno = [];
+            alert('Error al recibir los datos');
+        }
+    }
+
+    function MuestraAportacionesIMSS(data) {
+        try {
+            $("#idIMSS").html(data);
+            $("#venModalclienteIMSS").modal();
+        }
+        catch (ex) {
+            alumno = [];
+            alert('Error al recibir los datos');
+        }
+    }
+
+
+
+    function errorGenerico(jqXHR, exception) {
+        var msg = '';
+        if (jqXHR.status === 0) {
+            msg = 'No está conectado, favor de verificar su conexión.';
+        }
+        else if (jqXHR.status === 404) {
+            msg = 'Página no encontrada [404]';
+        }
+        else if (jqXHR.status === 500) {
+            msg = 'Error no hay conexión al servidor [500]';
+        }
+        else if (jqXHR.status === 'parseerror') {
+            msg = 'El parseo del JSON es erróneo.';
+        }
+        else if (jqXHR.status === 'timeout') {
+            $('body').addClass('loaded');
+        }
+        else if (jqXHR.status === 'abort') {
+            msg = 'La petición Ajax fue abortada.';
+        }
+        else {
+            msg = 'Error no conocido. ';
+            console.log(exception);
+        }
+        alert(msg);
+    }
+
+
+
+</script>
+
+
+<script type="text/javascript">
+
+
+
+
+
+
+    function LLamaAJAXPost(url, funcionExito) {
+        $.ajax(
+            {
+
+                type: 'GET',
+                url: url,
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: funcionExito,
+                error: errorGenerico
+            }
+        );
+
+    }
+
+
+
+    function errorGenerico(jqXHR, exception) {
+        var msg = '';
+        if (jqXHR.status === 0) {
+            msg = 'No está conectado, favor de verificar su conexión.';
+        }
+        else if (jqXHR.status === 404) {
+            msg = 'Página no encontrada [404]';
+        }
+        else if (jqXHR.status === 500) {
+            msg = 'Error no hay conexión al servidor [500]';
+        }
+        else if (jqXHR.status === 'parseerror') {
+            msg = 'El parseo del JSON es erróneo.';
+        }
+        else if (jqXHR.status === 'timeout') {
+            $('body').addClass('loaded');
+        }
+        else if (jqXHR.status === 'abort') {
+            msg = 'La petición Ajax fue abortada.';
+        }
+        else {
+            msg = 'Error no conocido. ';
+            console.log(exception);
+        }
+        alert(msg);
+    }
+
+
+</script>
